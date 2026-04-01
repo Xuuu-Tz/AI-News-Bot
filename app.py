@@ -107,4 +107,10 @@ if st.button("🚀 Generate My Digest", type="primary"):
                         mime="text/markdown"
                     )
                 except Exception as e:
-                    st.error(f"An error occurred with the Claude API: {e}")
+                    error_msg = str(e)
+                    if "401" in error_msg or "authentication_error" in error_msg:
+                        st.error("The API Key you entered appears to be incorrect. Please check in the left sidebar to ensure it is copied completely and does not contain extra spaces.")
+                    elif "429" in error_msg or "rate_limit_error" in error_msg:
+                        st.error("your API credits seem to be exhausted or the request rate is too high. Please try again later.")
+                    else:
+                        st.error(f"An unknown error occurred. Please contact the developer: {error_msg}")
